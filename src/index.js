@@ -16,6 +16,7 @@ export default {
  async fetch(request,env) {
   const url=new URL(request.url);
   if(request.method==="GET"&&url.pathname==="/")return html(INDEX_HTML);
+  if(request.method==="GET"&&(url.pathname==="/app.js"||url.pathname==="/style.css"))return env.ASSETS.fetch(request);
   if(url.pathname==="/health"&&request.method==="GET")return json({ok:true,app:"星渊 AI 漫剧工坊 V0.1",configured:!!env.XAI_API_KEY&&!!env.APP_ADMIN_TOKEN});
   if(!url.pathname.startsWith("/api/"))return json({error:"Not found"},404);
   if(!await authorized(request,env.APP_ADMIN_TOKEN))return json({error:"Unauthorized"},401);
